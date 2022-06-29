@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>고양이 가라사대</title>
+</head>
+<style>
+  body {
+    text-align: center;
+  }
+
+  .main-card button {
+    position: relative;
+    left: -45px;
+    bottom: 15px;
+  }
+
+  .favorites {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+</style>
+
+<body>
+  <div id="app"></div>
+
+  <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+
+    const Title =(props) => {
+      return(
+        <h1>{props.children}</h1>
+      );
+    };
+
+    const From =({handleFormSubmit}) => {
+
+      return(
+        <form onSubmit={handleFormSubmit}>
+          <input type="text" name="name" placeholder="영어 대사를 입력해주세요" />
+          <button type="submit">생성</button>
+      </form>
+      );
+    };
+
+     function CatItem(props){
+      return (
+        <li>
+          <img src={props.img} style={{width:"150px"}}/>
+          </li>
+      );
+    };
+
+    function Favorites({favorites}){
+      /* const CAT1 = "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
+      const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
+      const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
+
+      const cats = [CAT1, CAT2]; */
+
+      return (
+        <ul className="favorites">
+          {favorites.map(cat => <CatItem img={cat} key={cat} />)}
+        </ul>
+      );
+    };
+
+    const Maincard = ({img,handleHeartClick}) => {
+
+      /* 부모컴포넌트로 옮기고 <MainCard/>에 프롬으로 넘겨줌
+      function handleHeartClick(){
+        console.log("하트 눌렀음");
+
+      }; */
+
+      /* function handleHeartMouseOver(){
+        console.log("하트 스쳐 지나감");
+      }; */
+
+      return(
+        <div className="main-card">
+          <img
+            src={img}
+            alt="고양이"
+            width="400"
+          />
+          <button onClick={handleHeartClick}>🤍</button>
+        </div>
+      );
+    };
+  
+    const App =() => {
+
+      const CAT1 = "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
+      const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
+      const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
+
+      const [counter, setCounter] = React.useState(1);
+      const [mainCat, setMainCat] = React.useState(CAT1);
+      const [favorites, setFavorites] = React.useState([CAT1,CAT2]);
+
+      function handleFormSubmit(event){
+        event.preventDefault();
+        console.log("폼 전송됨");
+        setCounter(counter +1);
+        setMainCat(CAT2);
+      };
+
+      function handleHeartClick(){
+        console.log("하트 눌렀음");
+        setFavorites([...favorites,CAT3]);
+      };
+
+      return(
+        <div>
+          <Title>{counter}번째 고양이 가라사대</Title>
+          <From handleFormSubmit={handleFormSubmit}/>
+          <Maincard img={mainCat} handleHeartClick={handleHeartClick}/>
+          <Favorites favorites={favorites}/>
+        </div>
+      );
+    };
+
+    const cat = document.querySelector("#app");
+
+    ReactDOM.render(<App/>, cat);
+
+
+    </script>
+
+</body>
+</html>
+
+<!--
+  >>>하트버튼을 눌렀을때 고양이 리스트에 하나가 추가되고, Favorites에 고양이 이미지가 하나 추가되는것을 만들어본다. 상태, props, 이벤트, 리스트르 등을 알아야 한다.
+
+ -->

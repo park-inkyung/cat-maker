@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>고양이 가라사대</title>
+</head>
+<style>
+  body {
+    text-align: center;
+  }
+
+  .main-card button {
+    position: relative;
+    left: -45px;
+    bottom: 15px;
+  }
+
+  .favorites {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+</style>
+
+<body>
+  <div id="app"></div>
+
+  <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+
+    const Title =(props) => {
+      return(
+        <h1>{props.children}</h1>
+      );
+    };
+
+      const From =({updateMainCat}) => {
+      const includesHangul = (text) => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/i.test(text);
+
+      const [value, setValue] = React.useState("");
+      const [errorMessage, setErrorMessage] = React.useState("");
+      
+      function handleInputChange(e){
+       
+        const userValue = e.target.value;
+        setErrorMessage("");
+        
+        if(includesHangul(userValue)){
+          setErrorMessage("한글은 입력할 수 없습니다.");
+        }
+        setValue(userValue.toUpperCase());
+      }
+
+        function handleFormSubmit(e){
+          e.preventDefault();
+          setErrorMessage("");
+
+          if(value ===""){
+            setErrorMessage("빈 값으로 만들 수 없습니다");
+            return;
+          }
+
+        updateMainCat();
+      }
+
+      return(
+        <form onSubmit={handleFormSubmit}>
+          <input
+          type="text" 
+          name="name" 
+          placeholder="영어 대사를 입력해주세요"
+          value={value}
+          onChange={handleInputChange}
+          />
+          <button type="submit">생성</button>
+          <p style={{color:"red"}}>{errorMessage}</p>
+      </form>
+      );
+    };
+
+     function CatItem(props){
+      return (
+        <li>
+          <img src={props.img} style={{width:"150px"}}/>
+          </li>
+      );
+    };
+
+    function Favorites({favorites}){
+
+      return (
+        <ul className="favorites">
+          {favorites.map(cat => <CatItem img={cat} key={cat} />)}
+        </ul>
+      );
+    };
+
+    const Maincard = ({img,onHeartClick}) => {
+
+      return(
+        <div className="main-card">
+          <img
+            src={img}
+            alt="고양이"
+            width="400"
+          />
+          <button onClick={onHeartClick}>🤍</button>
+        </div>
+      );
+    };
+  
+    const App =() => {
+
+      const CAT1 = "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
+      const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
+      const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
+
+      const [counter, setCounter] = React.useState(1);
+      const [mainCat, setMainCat] = React.useState(CAT1);
+      const [favorites, setFavorites] = React.useState([CAT1,CAT2]);
+
+      /* function handleFormSubmit(event){
+        event.preventDefault();
+        setCounter(counter +1);
+        setMainCat(CAT2);
+      }; */
+
+      function updateMainCat(){
+        setMainCat(CAT2);
+        setCounter(counter +1);
+      }
+
+      function handleHeartClick(){
+        setFavorites([...favorites,CAT3]);
+      };
+
+      return(
+        <div>
+          <Title>{counter}번째 고양이 가라사대</Title>
+          <From updateMainCat={updateMainCat}/>
+          <Maincard img={mainCat} onHeartClick={handleHeartClick}/>
+          <Favorites favorites={favorites}/>
+        </div>
+      );
+    };
+
+    const cat = document.querySelector("#app");
+
+    ReactDOM.render(<App/>, cat);
+
+
+    </script>
+
+</body>
+</html>
+
+<!-- 
+  >>> 중간코드 정리하기
+
+  (1) 콘솔 모두 삭제
+  (2) 리액트에서 이벤트 핸들러 함수이름을 지을 때 사용하는 컨벤션(convention):규칙, 약속
+  이벤트 핸들러 함수르 이름을 지을때는 handle 이라고 시작을 하고 그 함수를 만약에 프롭으로 넘긴다고 했을 때, on이라는 접두어를 붙인다. 실제로 내가 코딩한 함수의 이름은 handle로 지어도 이걸 프롭으로 넘길때는 on이라고 한다.
+  
+  <Maincard img={mainCat} handleHeartClick={handleHeartClick}/> ->변경 전
+    <Maincard img={mainCat} onHeartClick={handleHeartClick}/> ->변경 후 
+
+  const Maincard = ({img,handleHeartClick}) => {  ->변경 전
+    const Maincard = ({img,onHeartClick}) => {  ->변경 후
+  
+  <button onClick={handleHeartClick}>🤍</button>  ->변경 전
+    <button onClick={onHeartClick}>🤍</button>  ->변경 후
+
+  (3) 부모컴포넌트(APP)에서 handleFormSubmit 이라는 함수를 부모에서 내려서 보내주고 있는데
+
+   <From handleFormSubmit={handleFormSubmit}/>
+      const From =() => { 여기서는 사용하고 있지 않고 직접 handleFormSubmit 을 구현하고 있다.
+        -> 부모컴포넌트의 handleFormSubmit 을 수정한다. -> updateMainCat 함수를 새로 만들었음
+        const From =({updateMainCat}) => {  ->변경 후
+
+ -->

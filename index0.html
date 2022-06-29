@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>고양이 가라사대</title>
+  </head>
+  <style>
+    body {
+      text-align: center;
+    }
+    .main-card button {
+      position: relative;
+      left: -45px;
+      bottom: 15px;
+    }
+    .favorites {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .favorites img {
+      width: 150px;
+    }
+  </style>
+  <body>
+    <div id="app"></div>
+    <!-- <h1>1번째 고양이 가라사대</h1>
+    <form>
+      <input type="text" name="name" placeholder="영어 대사를 입력해주세요" />
+      <button type="submit">생성</button>
+    </form>
+    <div class="main-card">
+      <img
+        src="https://cataas.com/cat/60b73094e04e18001194a309/says/react"
+        alt="고양이"
+        width="400"
+      />
+      <button>🤍</button>
+    </div>
+    <ul class="favorites">
+      <li>
+        <img
+          src="https://cataas.com/cat/60b73094e04e18001194a309/says/react"
+          alt="고양이"
+        />
+      </li>
+      <li>
+        <img
+          src="https://cataas.com/cat/60b73094e04e18001194a309/says/react"
+          alt="고양이"
+        />
+      </li>
+      <li>
+        <img
+          src="https://cataas.com/cat/60b73094e04e18001194a309/says/react"
+          alt="고양이"
+        />
+      </li>
+    </ul> -->
+
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script type="text/babel">  /* babel -> 통역사기능 */
+
+    const title = (
+      <h1>1번째 고양이 가라사대</h1>
+    );
+
+    const form = (
+      <form>
+      <input type="text" name="name" placeholder="영어 대사를 입력해주세요" />
+      <button type="submit">생성</button>
+    </form>
+    );
+
+    const catItem = (
+      <li>
+        <img src="https://cataas.com/cat/60b73094e04e18001194a309/says/react" />
+      </li>
+    );  /* img처럼 단독태그는 닫을 때 /> 사용해준다 */
+
+    const foo ="helloe rect!"
+    function food(){
+      return 1;
+    }
+
+    const favorites = (
+      <ul class="favorites">
+        {1+2}
+        {foo}
+        {food()}
+        {catItem}
+        {catItem}
+        {catItem}
+        </ul>
+    );
+
+    const mainCard = (
+      <div class="main-card">
+      <img
+        src="https://cataas.com/cat/60b73094e04e18001194a309/says/react"
+        alt="고양이"
+        width="400"
+      />
+      <button>🤍</button>
+    </div>
+    );
+
+    const app =(
+      <div>
+      {title}
+      {form}
+      {mainCard}
+      {favorites}
+      </div>
+    );
+    const cat = document.querySelector("#app");
+
+    /* ReactDOM.render(catItem, cat); */  //render ->뿌리다
+    /* ReactDOM.render(favorites, cat); */
+    ReactDOM.render(app, cat);
+
+
+    </script>
+
+  </body>
+</html>
+
+<!-- 
+  >>> 태그를 리액트 엘리먼트로 바꾸어서 브라우저에 그리기
+  
+
+  *웹사이트에 리액트 추가하기
+ https://ko.reactjs.org/docs/add-react-to-a-website.html
+
+ <script type="text/babel">
+  babel은? 웹브라우저에서 인식하지 못하는 언어(JSX)를 인식할 수 있게 통역을 해주는 역할이라고 보면 된다.
+
+  *자바스크립트 변수를 리액트에 쓰는 방법은 바로 {}이다.
+  중괄호를 쓰면 여러가지 자바스크립트 문법을 리액트에서 사용할수 있다.
+  {}안에는 자바스크립트 표현식(계산된 값이 나오는것)을 사용할수 있다.
+
+  *ReactDOM.render();
+  리액트에 그릴수 있는 것은 가장 최상위 태그가 하나이어야 한다.
+
+
+
+
+
+
+
+
+
+
+ -->

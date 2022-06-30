@@ -142,6 +142,11 @@
       const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
       const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
 
+      /* const [counter, setCounter] = React.useState(
+        jsonLocalStorage.getItem("counter")
+      ); */
+
+      //수정(1-1)
       const [counter, setCounter] = React.useState(() =>{
         return jsonLocalStorage.getItem("counter")
       });
@@ -149,6 +154,11 @@
 
       const [mainCat, setMainCat] = React.useState(CAT1);
 
+      /* const [favorites, setFavorites] = React.useState(
+        jsonLocalStorage.getItem("favorites") || []
+      ); */
+
+      //수정(1-2)
       const [favorites, setFavorites] = React.useState(() =>{
         return jsonLocalStorage.getItem("favorites")  || [];
       }); 
@@ -164,6 +174,15 @@
       setInitialCat();
     },[]);
 
+    /* async function updateMainCat(value){
+        const newCat = await fetchCat(value);
+        setMainCat(newCat);
+        const nextCounter = counter +1;
+        setCounter(nextCounter);
+        jsonLocalStorage.setItem("counter", nextCounter);
+      } */
+
+      //수정(2)
       async function updateMainCat(value){
         const newCat = await fetchCat(value);
 
@@ -198,7 +217,32 @@
 
     ReactDOM.render(<App/>, cat);
 
+
     </script>
 
 </body>
+
 </html>
+
+<!-- 
+>>> 성능최적화
+
+(1) 컴포넌트 안에 있는 모든 코드는 컴포넌트의 상태가 바뀔때마다 혹은 ui가 바뀔때마다 계속 실행이 된다.
+  const [counter, setCounter] = React.useState(
+    jsonLocalStorage.getItem("counter")
+  );
+  -> 이 부분에서 LocalStorage 에 접근하는 일은 시간부하가 걸리는 일이다.
+  문제는 내가 카운터를 계속 올릴때마다 LocalStorage 를 계속 접근하고 접근하고 접근할 필요가 없다.
+  앱이 처음 실행될때 단 한번만 LocalStorage 에 접근하면 된다. useState 안에 함수를 넘기는걸로 해결 할 수 있다.
+
+
+  (2) input창에 입력을 하고 생성버튼을 계속 누를 때 자연스럽게 숫자가 올라가지 않는 문제
+  왜냐하면,  리액트에서 useState 에 대한 액션을 처리할때 현재 있는 카운터 스테이드와 셋카운터가 바라보고 있는 카운터가 서로 달라서 믹스매치가 일어나기 때문이다.
+  이것도 함수를 통해서 해결 할 수 있다.
+  -> setCounter((prev) => {
+    return prev +1;
+  });
+  여기서 prev는 기존값이라고 생각하면 된다.
+
+
+ -->

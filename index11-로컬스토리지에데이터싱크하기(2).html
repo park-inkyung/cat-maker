@@ -35,6 +35,7 @@
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
   <script type="text/babel">
+    //만들어놓은 함수 추가 
     const jsonLocalStorage = {
       setItem: (key, value) => {
         localStorage.setItem(key, JSON.stringify(value));
@@ -44,28 +45,21 @@
       },
     };
 
-    const fetchCat = async (text) => {
-      const OPEN_API_DOMAIN = "https://cataas.com";
-      const response = await fetch(`${OPEN_API_DOMAIN}/cat/says/${text}?json=true`);
-      const responseJson = await response.json();
-      return `${OPEN_API_DOMAIN}/${responseJson.url}`;
-    };
-
     const Title =(props) => {
       return(
         <h1>{props.children}</h1>
       );
     };
 
-    const From =({updateMainCat}) => {
-    const includesHangul = (text) => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/i.test(text);
+      const From =({updateMainCat}) => {
+      const includesHangul = (text) => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/i.test(text);
 
-    const [value, setValue] = React.useState("");
-    const [errorMessage, setErrorMessage] = React.useState("");
+      const [value, setValue] = React.useState("");
+      const [errorMessage, setErrorMessage] = React.useState("");
       
-    function handleInputChange(e){
+      function handleInputChange(e){
        
-      const userValue = e.target.value;
+        const userValue = e.target.value;
         setErrorMessage("");
         
         if(includesHangul(userValue)){
@@ -74,20 +68,20 @@
         setValue(userValue.toUpperCase());
       }
 
-    function handleFormSubmit(e){
-      e.preventDefault();
-      setErrorMessage("");
+        function handleFormSubmit(e){
+          e.preventDefault();
+          setErrorMessage("");
 
-        if(value ===""){
-          setErrorMessage("빈 값으로 만들 수 없습니다");
-        return;
-        }
+          if(value ===""){
+            setErrorMessage("빈 값으로 만들 수 없습니다");
+            return;
+          }
 
-      updateMainCat(value);
-    }
+        updateMainCat();
+      }
 
-    return(
-      <form onSubmit={handleFormSubmit}>
+      return(
+        <form onSubmit={handleFormSubmit}>
           <input
           type="text" 
           name="name" 
@@ -110,9 +104,6 @@
     };
 
     function Favorites({favorites}){
-      if(favorites.length === 0) {
-        return <div>사진 위 하트를 눌러 고양이 사진을 저장해보세요!</div>;
-      }
 
       return (
         <ul className="favorites">
@@ -121,8 +112,7 @@
       );
     };
 
-    const Maincard = ({img,onHeartClick,alreadyFavorite}) => {
-      const hearIcon = alreadyFavorite ? "💖" : "🤍" ;
+    const Maincard = ({img,onHeartClick}) => {
 
       return(
         <div className="main-card">
@@ -131,7 +121,7 @@
             alt="고양이"
             width="400"
           />
-          <button onClick={onHeartClick}>{hearIcon}</button>
+          <button onClick={onHeartClick}>🤍</button>
         </div>
       );
     };
@@ -142,53 +132,38 @@
       const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
       const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
 
-      const [counter, setCounter] = React.useState(() =>{
-        return jsonLocalStorage.getItem("counter")
-      });
-
+      //수정(1)
+      const [counter, setCounter] = React.useState(
+        jsonLocalStorage.getItem("counter")
+        );
 
       const [mainCat, setMainCat] = React.useState(CAT1);
 
-      const [favorites, setFavorites] = React.useState(() =>{
-        return jsonLocalStorage.getItem("favorites")  || [];
-      }); 
+      //수정(2)
+      const [favorites, setFavorites] = React.useState(
+        jsonLocalStorage.getItem("favorites") || []
+      );
 
-    const alreadyFavorite = favorites.includes(mainCat);
+      function updateMainCat(){
+        setMainCat(CAT2);
 
-    async function setInitialCat(){
-      const newCat = await fetchCat("first cat");
-      setMainCat(newCat);
-    };
+        const nextCounter = counter +1;
+        setCounter(nextCounter);
+        jsonLocalStorage.setItem("counter", nextCounter);
+      }
 
-    React.useEffect(() => {
-      setInitialCat();
-    },[]);
-
-      async function updateMainCat(value){
-        const newCat = await fetchCat(value);
-
-        setMainCat(newCat);
-
-        setCounter((prev) => {
-          const nextCounter = counter +1;
-          jsonLocalStorage.setItem("counter", nextCounter);
-          return nextCounter;
-        });  
-      } 
-
+      //수정(3)
       function handleHeartClick(){
         const nextFavorites = [...favorites,mainCat];
         setFavorites(nextFavorites);
         jsonLocalStorage.setItem("favorites", nextFavorites);
       };
 
-      const counterTitle = counter === null ? "" : counter + "번째";
-
       return(
         <div>
-          <Title>{counterTitle}고양이 가라사대</Title>
+          <Title>{counter}번째 고양이 가라사대</Title>
           <From updateMainCat={updateMainCat}/>
-          <Maincard img={mainCat} onHeartClick={handleHeartClick} alreadyFavorite={alreadyFavorite}/>
+          <Maincard img={mainCat} onHeartClick={handleHeartClick}/>
           <Favorites favorites={favorites}/>
         </div>
       );
@@ -198,7 +173,15 @@
 
     ReactDOM.render(<App/>, cat);
 
+
     </script>
 
 </body>
 </html>
+
+<!-- 
+  >>> 데이터 유지...(카운터, 하트)
+
+  로컬스토리지를 읽어왔을때 문자로 받아와서 Number로 감싸줬는데 넘버 외에도 array, true, false 등도 그대로 저장이 되는 불편함이 있어서 이거를 해소할 수 있는 내용의 함수를 이용한다.
+
+ -->

@@ -57,7 +57,7 @@
       );
     };
 
-    const From =({updateMainCat}) => {
+    const Form =({updateMainCat}) => {
     const includesHangul = (text) => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/i.test(text);
 
     const [value, setValue] = React.useState("");
@@ -121,7 +121,7 @@
       );
     };
 
-    const Maincard = ({img,onHeartClick,alreadyFavorite}) => {
+    const MainCard = ({img,onHeartClick,alreadyFavorite}) => {
       const hearIcon = alreadyFavorite ? "💖" : "🤍" ;
 
       return(
@@ -187,7 +187,7 @@
       return(
         <div>
           <Title>{counterTitle}고양이 가라사대</Title>
-          <From updateMainCat={updateMainCat}/>
+          <Form updateMainCat={updateMainCat}/>
           <Maincard img={mainCat} onHeartClick={handleHeartClick} alreadyFavorite={alreadyFavorite}/>
           <Favorites favorites={favorites}/>
         </div>
@@ -202,3 +202,68 @@
 
 </body>
 </html>
+<!-- 
+>>> 실무개발환경만들기
+
+create-react-app
+리액트 초기 개발에 필요한 모든 것을 자동으로 만들어주는 라이브러리
+
+  1. 간단한 앱 껍데기
+
+  2. 리액트 라이브러리 셋업(개발자용/프로덕션용)
+
+  3. 웹팩 셋업
+    -라이브서버
+    -저장할때마다 JSX - >JS
+
+  4. 테스트셋업
+
+  5.빌드셋업
+  - js로 변화, 코드용량최소화, 프로덕션 라이브러리 설정 등
+
+  *구글에서
+  create-react-app
+
+  새로운 React앱 만들기
+  https://ko.reactjs.org/docs/create-a-new-react-app.html
+
+  *터미널에서 (ctrl+j)에서 
+  -node.js 설치여부 확인 (버전이 표시되면 정상적으로 설치되었음)
+  node -v
+
+  *파일목록확인
+  dir(window용) 또는 ls(mac용)
+
+  -만들 앱 이름 지어주기 : npx create-react-app 만들앱이름-cra
+  npx create-react-app cat-maker-cra
+  -> 설치하는데 느리면 2~3분정도 걸리고, Happy hacking! 이라고 뜨면 정상적으로 완료!
+
+  *폴더로 이동...
+  cd cat-maker-cra > 엔터
+
+  *라이브서버를 켜준다
+  npm start > 엔터 
+  -> 그러면 라이버서버를 켜주고 리액트로고가 돌아가는 화면이 나온다.
+  (서버를 켜고 끄는법은 창에 ctrl+c 하면 y/n)
+
+  -> cat-maker-cra 라는 폴더가 생성이된다
+  -> src폴더 안의 App.js 파일을 열어서 Learn React2로 수정 후 바로 업데이트 되는걸 확인한다
+  
+  * 만들어진 cat-maker-cra 폴더의 App.js 에 우리가 만들 파일(index.html)을 복사하여 붙인다,
+  * index.html 은 리액트를 스크립트로 바로 들고왔지만 이젠 모듈방식으로 사용해야 한다.
+    ->import React from  "react"; -> App.js파일의 맨 위에 입력
+
+  * App 부모 컴포넌트를 제외한 나머지 각각의 컴포넌트로 분리한다.
+    src > componentns > 폴더를 만들고 컴포넌트 파일들을 만들어서 파일의 소스를 이동해준다.
+    (EX> Title.js / MainCard.js / Favorites.js / CatItem.js / Form.js)
+
+  * 터미널에서 다시 최종 파일을 깃허브에 올려준다.
+    경로를 다시 cat-maker로 이동
+
+    -> 터미널에서 입력
+    cd ../ (경로이동)
+    git add . > git commit -m "made CRA" > git push origin master
+
+
+
+ -->

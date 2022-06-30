@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/cat-maker/static/css/main.2eab430d.css",
+    "main.js": "/cat-maker/static/js/main.d2567c20.js",
+    "index.html": "/cat-maker/index.html",
+    "main.2eab430d.css.map": "/cat-maker/static/css/main.2eab430d.css.map",
+    "main.d2567c20.js.map": "/cat-maker/static/js/main.d2567c20.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2eab430d.css",
+    "static/js/main.d2567c20.js"
+  ]
+}
